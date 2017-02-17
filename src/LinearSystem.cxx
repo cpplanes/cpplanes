@@ -46,6 +46,8 @@ bool LinearSystem::assemble(cplx_t frequency) {
 	for (auto d : domains) {
 		d.assemble(frequency, linsys_size);
 	}
+
+	return true;
 }
 
 }
