@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 2.6.0)
 
+set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_C_COMPILER "clang")
+set(CMAKE_CXX_STANDARD 11)
+
 project(cpplanes)
 
 # Find source files
