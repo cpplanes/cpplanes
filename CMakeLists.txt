@@ -6,11 +6,13 @@ set(CMAKE_CXX_STANDARD 11)
 
 project(cpplanes)
 
-# Find source files
-file(GLOB SOURCES src/*.cxx)
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # Include header files
-# include_directories(include)
+# include_directories(${CMAKE_SOURCE_DIR}/src)
+file(GLOB SOURCES src/*.cxx)
 
 # Create shared library
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
