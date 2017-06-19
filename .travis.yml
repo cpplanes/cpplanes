@@ -1,12 +1,37 @@
 language: cpp
 
-os:
-  - linux
-  - osx
+matrix:
+  include:
+    # works on Precise and Trusty
+    - os: linux
+      addons:
+        apt: sources:
+                - ubuntu-toolchain-r-test
+            packages:
+                - g++-5
+                - gcc-5
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+    - os: linux
+      addons:
+        apt:
+            sources:
+                - llvm-toolchain-precise
+            packages:
+                - clang-3.7
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+    - os: osx
+      osx_image: xcode8.3
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
+    - os: osx
+      osx_image: xcode8.3
+      env:
+        - MATRIX_EVAL="brew install gcc && CC=gcc-6 && CXX=g++-6"
 
-compiler:
-  - clang
-  - gcc
+before_install:
+  - eval "${MATRIX_EVAL}"
 
 script:
   # Check versions first
@@ -15,3 +40,4 @@ script:
   - cmake --version
   # then build
   - mkdir build && cd build && cmake .. && make
+
