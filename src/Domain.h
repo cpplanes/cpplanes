@@ -45,7 +45,7 @@ private:
 	mesh::Mesh mesh;
 	medium::Id material_id;
 	medium::PhysicalModel model;
-	method::Method method;
+	method::Method* method;
 	int nbdof = {-1};
 public:
 	int get_nbdof();

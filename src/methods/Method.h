@@ -36,10 +36,10 @@ namespace method {
 
 class Method {
 public:
-	virtual matrix<real_t> get_H(std::array<mesh::Node, MAX_NODES_PER_ELEMENT> nodes);
-	virtual matrix<real_t> get_Q(std::array<mesh::Node, MAX_NODES_PER_ELEMENT> nodes);
+	matrix<real_t> get_H(std::array<mesh::Node, MAX_NODES_PER_ELEMENT> nodes);
+	matrix<real_t> get_Q(std::array<mesh::Node, MAX_NODES_PER_ELEMENT> nodes);
 
-	virtual matrix<cplx_t> assemble(cplx_t frequency, int linsys_size, mesh::Mesh mesh);
+	matrix<cplx_t> assemble(cplx_t frequency, int linsys_size, mesh::Mesh mesh);
 
 	// virtual void adapt_mesh(mesh::Mesh mesh);
 	// virtual get_M()

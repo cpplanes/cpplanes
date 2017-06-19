@@ -30,6 +30,7 @@
 #include "../../utils.h"
 #include <boost/numeric/ublas/matrix.hpp>
 
+using namespace boost::numeric::ublas;
 using namespace cpplanes;
 
 namespace se2 {
@@ -39,6 +40,8 @@ public:
 	int size();
 	matrix<cplx_t> assemble(cplx_t frequency, int linsys_size,  mesh::Mesh mesh);
 };
+
+}
 
 #endif /* !__SE2_h__ */
 
