@@ -5,20 +5,21 @@ matrix:
     # works on Precise and Trusty
     - os: linux
       addons:
-        apt: sources:
-                - ubuntu-toolchain-r-test
-            packages:
-                - g++-5
-                - gcc-5
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+            - gcc-5
       env:
         - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
     - os: linux
       addons:
         apt:
-            sources:
-                - llvm-toolchain-precise
-            packages:
-                - clang-3.7
+          sources:
+            - llvm-toolchain-precise
+          packages:
+            - clang-3.7
       env:
         - MATRIX_EVAL="CC=clang && CXX=clang++"
     - os: osx
