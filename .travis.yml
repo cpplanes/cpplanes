@@ -1,0 +1,17 @@
+language: cpp
+
+os:
+  - linux
+  - osx
+
+compiler:
+  - clang
+  - gcc
+
+script:
+  # Check versions first
+  - gcc -v && g++ -v
+  - clang -v && clang++ -v
+  - cmake --version
+  # then build
+  - mkdir build && cd build && cmake .. && make
