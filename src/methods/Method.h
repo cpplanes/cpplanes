@@ -40,7 +40,7 @@ public:
 	Matrix<real_t, Dynamic, Dynamic> get_H(std::array<mesh::Node, MAX_NODES_PER_ELEMENT> nodes);
 	Matrix<real_t, Dynamic, Dynamic> get_Q(std::array<mesh::Node, MAX_NODES_PER_ELEMENT> nodes);
 
-	SparseMatrix<cplx_t> assemble(cplx_t frequency, int linsys_size, mesh::Mesh mesh);
+	virtual SparseMatrix<cplx_t> assemble(cplx_t frequency, int linsys_size, mesh::Mesh mesh);
 
 	// virtual void adapt_mesh(mesh::Mesh mesh);
 	// virtual get_M()
