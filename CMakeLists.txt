@@ -12,8 +12,14 @@ set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
 # Include header files
-# include_directories(${CMAKE_SOURCE_DIR}/src)
+set(EIGEN3_ROOT ${CMAKE_SOURCE_DIR}/deps/eigen)
+find_package(Eigen3 REQUIRED)
+include_directories(${EIGEN3_INCLUDE_DIR})
+
+
 file(GLOB SOURCES src/*.cxx)
 
 # Create shared library

@@ -24,12 +24,13 @@
 #include "SE2.h"
 #include "../../Model.h"
 #include <cmath>
-#include <boost/numeric/ublas/storage.hpp>
+#include <Eigen/Sparse>
+#include <Eigen/Dense>
 
 namespace se2 {
-using namespace boost::numeric::ublas;
+using namespace Eigen;
 
-matrix<double> SE2::get_H(std::array<Node, 2> nodes) {
+Matrix<double, 2, 2> SE2::get_H(std::array<Node, 2> nodes) {
 	double h = std::abs(nodes[0].coords[0]-nodes[1].coords[0]);
 	matrix<double> H(2,2);
 	H(0,0) = 1/h;
@@ -39,7 +40,7 @@ matrix<double> SE2::get_H(std::array<Node, 2> nodes) {
 	return H
 }
 
-matrix<double> SE2::get_Q(std::array<Node, 2> nodes) {
+Matrix<double, 2, 2> SE2::get_Q(std::array<Node, 2> nodes) {
 	double h = std::abs(nodes[0].coords[0]-nodes[1].coords[0]);
 	matrix<double> H(2,2);
 	H(0,0) = 2*h/6;
@@ -49,9 +50,9 @@ matrix<double> SE2::get_Q(std::array<Node, 2> nodes) {
 	return H
 }
 
-matrix<cplx_t> SE2::assemble(cplx_t frequency, int linsys_size,  mesh::Mesh mesh) {
-	matrix<cplx_t> A_domain(linsys_size, linsys_size);
-	matrix<cplx_t> A_elem(2, 2);
+SparseMatrix<cplx_t> SE2::assemble(cplx_t frequency, int linsys_size,  mesh::Mesh mesh) {
+	SparseMatrix<cplx_t> A_domain(linsys_size, linsys_size);
+	Matrix<cplx_t, 2, 2> A_elem(2, 2);
 
 	for (auto element : mesh.elements) {
 		int ni = element.nodes[0].index;

@@ -42,7 +42,7 @@ int LinearSystem::get_linsys_size() {
 bool LinearSystem::assemble(cplx_t frequency) {
 	int linsys_size = get_linsys_size();
 
-	matrix<cplx_t> A(linsys_size, linsys_size);
+	SparseMatrix<cplx_t> A(linsys_size, linsys_size);
 	for (auto d : domains) {
 		d.assemble(frequency, linsys_size);
 	}

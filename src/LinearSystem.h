@@ -24,12 +24,12 @@
 #ifndef __LinearSystem_h__
 #define __LinearSystem_h__
 
-#include <boost/numeric/ublas/matrix.hpp>
+#include <Eigen/Sparse>
 #include "Domain.h"
 #include "utils.h"
 
 using namespace cpplanes;
-using namespace boost::numeric::ublas;
+using namespace Eigen;
 using namespace domain;
 
 namespace linsys {
@@ -50,7 +50,7 @@ class LinearSystem {
 private:
 	int get_linsys_size();
 
-	matrix<cplx_t> A;
+	SparseMatrix<cplx_t> A;
 	int linsys_size = {-1};
 	std::vector<Domain> domains;
 public:

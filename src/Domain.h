@@ -28,9 +28,9 @@
 #include "Medium.h"
 #include "utils.h"
 #include "methods/Method.h"
-#include <boost/numeric/ublas/matrix.hpp>
+#include <Eigen/Sparse>
 
-using namespace boost::numeric::ublas;
+using namespace Eigen;
 using namespace cpplanes;
 
 namespace domain {
@@ -49,7 +49,7 @@ private:
 	int nbdof = {-1};
 public:
 	int get_nbdof();
-	matrix<cplx_t> assemble(cplx_t frequency, int linsys_size);
+	SparseMatrix<cplx_t> assemble(cplx_t frequency, int linsys_size);
 };
 
 }

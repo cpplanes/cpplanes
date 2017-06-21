@@ -28,9 +28,9 @@
 #include "../../Mesh.h"
 #include "../../Medium.h"
 #include "../../utils.h"
-#include <boost/numeric/ublas/matrix.hpp>
+#include <Eigen/Sparse>
 
-using namespace boost::numeric::ublas;
+using namespace Eigen;
 using namespace cpplanes;
 
 namespace se2 {
@@ -38,7 +38,7 @@ namespace se2 {
 class SE2: public method::Method {
 public:
 	int size();
-	matrix<cplx_t> assemble(cplx_t frequency, int linsys_size,  mesh::Mesh mesh);
+	SparseMatrix<cplx_t> assemble(cplx_t frequency, int linsys_size,  mesh::Mesh mesh);
 };
 
 }

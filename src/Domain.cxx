@@ -40,8 +40,8 @@ int Domain::get_nbdof () {
 	return nbdof;
 }
 
-matrix<cplx_t> Domain::assemble(cplx_t frequency, int linsys_size) {
-	matrix<cplx_t> t =  method->assemble(frequency, linsys_size, mesh);
+SparseMatrix<cplx_t> Domain::assemble(cplx_t frequency, int linsys_size) {
+	SparseMatrix<cplx_t> t =  method->assemble(frequency, linsys_size, mesh);
 	return t;
 }
 

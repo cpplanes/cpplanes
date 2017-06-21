@@ -24,22 +24,23 @@
 #ifndef __Method_h__
 #define __Method_h__
 
-#include <boost/numeric/ublas/matrix.hpp>
+#include <Eigen/Sparse>
+#include <Eigen/Dense>
 #include "../config.h"
 #include "../utils.h"
 #include "../Mesh.h"
 
-using namespace boost::numeric::ublas;
+using namespace Eigen;
 using namespace cpplanes;
 
 namespace method {
 
 class Method {
 public:
-	matrix<real_t> get_H(std::array<mesh::Node, MAX_NODES_PER_ELEMENT> nodes);
-	matrix<real_t> get_Q(std::array<mesh::Node, MAX_NODES_PER_ELEMENT> nodes);
+	Matrix<real_t, Dynamic, Dynamic> get_H(std::array<mesh::Node, MAX_NODES_PER_ELEMENT> nodes);
+	Matrix<real_t, Dynamic, Dynamic> get_Q(std::array<mesh::Node, MAX_NODES_PER_ELEMENT> nodes);
 
-	matrix<cplx_t> assemble(cplx_t frequency, int linsys_size, mesh::Mesh mesh);
+	SparseMatrix<cplx_t> assemble(cplx_t frequency, int linsys_size, mesh::Mesh mesh);
 
 	// virtual void adapt_mesh(mesh::Mesh mesh);
 	// virtual get_M()

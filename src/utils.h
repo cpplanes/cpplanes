@@ -24,6 +24,7 @@
 #ifndef __utils_h__
 #define __utils_h__
 
+#include <Eigen/Dense>
 #include <complex>
 
 namespace cpplanes {
@@ -32,6 +33,14 @@ namespace cpplanes {
 	using cplx_t = std::complex<real_t>;
 
 }
+
+namespace Eigen {
+
+	using real_t = double;
+	using cplx_t = std::complex<real_t>;
+
+}
+
 
 #endif /* !__utils_h__ */
 
