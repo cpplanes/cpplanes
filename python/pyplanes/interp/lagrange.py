@@ -25,7 +25,7 @@
 import numpy as np
 
 from .base_interp import Interpolator
-from .gauss_legendre import GaussLegendre
+from ..integration.gauss_legendre import GaussLegendre
 
 class LinearLagrangeInterpolator(Interpolator):
     """ Linear interpolator using a set of Lagrange shape functions
@@ -34,15 +34,13 @@ class LinearLagrangeInterpolator(Interpolator):
 
     H : Phi*Phi
     Q : Phi'*Phi'
-
-    To do :
-    - let open the choice of integration schemes (templates?)
     """
 
-    def __init__(self, dim=1):
+    def __init__(self, dim=1, integration_scheme=GaussLegendre):
 
         super().__init__()
         self.dim = dim
+        self.__integration_scheme = integration_scheme
 
         if self.dim==1:
             self.__H = 1/6*np.matrix([[2, 1], [1, 2]])
@@ -58,7 +56,7 @@ class LinearLagrangeInterpolator(Interpolator):
 
     def __1dinterp(self, element):
         """ 1D (line) interpolation
-        
+
         This is almost entirely precomputed
         The function implements a naive caching strategy for
         fun and later use... may be.
@@ -83,7 +81,7 @@ class LinearLagrangeInterpolator(Interpolator):
         """
         # prepare nodes for multiplication
         nodes = np.array(element.nodes, dtype=np.float64)
-        GP = GaussLegendre.Order[4]
+        GP = self.__integration_scheme.get_order(4)
 
         x0 = GP['x_i'][0]
         x1 = GP['x_i'][1]

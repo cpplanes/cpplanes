@@ -38,11 +38,9 @@ class FEM:
     - Method to Method hybrids have to be thought though... would it be easier to iterate
     """
 
-    def __init__(self, domain, interp):
+    def __init__(self, interp, *args, **kwargs):
         """ Store domain and interpolation technique """
-        self.domain = domain
-        self.material = self.domain.material
-        self.mesh = self.domain.mesh
+        super(FEM, self).__init__(*args, **kwargs)
         self.interp = interp
 
         self.__assembled_frequency = None
@@ -73,7 +71,7 @@ class FEM:
                     A_c.append(self.map_dof_node[n2])
                     A_v.append(elem_matrix[i_n1, i_n2])
 
-        for bc in self.domain.boundary_conditions:
+        for bc in self.boundary_conditions:
             bc.evaluate(f=f)
             A_r += bc.A_r
             A_c += bc.A_c

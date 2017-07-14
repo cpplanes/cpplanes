@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding:utf8 -*-
 #
-# domain.py
+# __init__.py
 #
 # This file is part of cpplanes, a software distributed under the MIT license.
 # For any question, please contact one of the authors cited below.
@@ -22,23 +22,7 @@
 # copies or substantial portions of the Software.
 #
 
-from .FEM import FEM
-
-class BaseDomain:
-    """
-    Stores a Domain (i.e. a mesh, material and associated boundary conditions) one then
-    feeds to a method
-    """
-
-    def __init__(self, mesh, material, boundary_conditions=None, *args, **kwargs):
-        super(BaseDomain, self).__init__(*args, **kwargs)
-        self.mesh = mesh
-        self.material = material
-
-        self.boundary_conditions = boundary_conditions if boundary_conditions else []
+from .base_integration import IntegrationScheme
+from .gauss_legendre import GaussLegendre
 
 
-class FEMDomain(FEM, BaseDomain):
-
-    def __init__(self, *args, **kwargs):
-        super(FEMDomain, self).__init__(*args, **kwargs)

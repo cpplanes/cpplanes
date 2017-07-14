@@ -22,7 +22,7 @@
 # copies or substantial portions of the Software.
 #
 
-class GaussLegendre:
+class GaussLegendre(IntegrationScheme):
     """
     Storage class for Gauss-Legendre coefficients and easy access later
     """
