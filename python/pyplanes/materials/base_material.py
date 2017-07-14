@@ -23,6 +23,10 @@
 #
 
 class Material:
+    """Base class for material
+
+    Keep in mind that the goal is to mimick C++
+    """
     pass
 
 

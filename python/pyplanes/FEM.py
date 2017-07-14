@@ -27,8 +27,19 @@ import scipy.sparse as sparse
 from scipy.sparse.linalg import spsolve
 
 class FEM:
+    """ Finite Element procedure
+
+    I tried to keep it applicable to most geometries
+
+    To do:
+    - Make this class inherit from a Method super class for easier handling in C++
+    - May be use multiple inheritance to inherit from Domain (which is finally a simple
+      storage)
+    - Method to Method hybrids have to be thought though... would it be easier to iterate
+    """
 
     def __init__(self, domain, interp):
+        """ Store domain and interpolation technique """
         self.domain = domain
         self.material = self.domain.material
         self.mesh = self.domain.mesh
@@ -36,6 +47,8 @@ class FEM:
 
         self.__assembled_frequency = None
 
+        self.map_dof_node = list(range(len(self.mesh.nodes)))
+        self.removed_nodes = []
         self.A = None
         self.b = None
 
@@ -48,23 +61,18 @@ class FEM:
 
         A_r, A_c, A_v = [], [], []
         b_r, b_c, b_v = [], [], []
-        l_r = [0, 0, 1, 1]
-        l_c = [0, 1, 0, 1]
 
         for element in (self.mesh.get_element(_) for _ in range(len(self.mesh.elements))):
 
             (Me, Ke) = self.interp.interpolate_over(element)
             elem_matrix = Ke-k**2*Me
-            _r = [element.node_ids[_] for _ in l_r]
-            _c = [element.node_ids[_] for _ in l_c]
-            _v = [elem_matrix[l_r[_], l_c[_]] for _ in range(len(_r))]
 
-            A_r += _r
-            A_c += _c
-            A_v += _v
+            for i_n1, n1 in enumerate(element.node_ids):
+                for i_n2, n2 in enumerate(element.node_ids):
+                    A_r.append(self.map_dof_node[n1])
+                    A_c.append(self.map_dof_node[n2])
+                    A_v.append(elem_matrix[i_n1, i_n2])
 
-        deleted_rows = []
-        deleted_cols = []
         for bc in self.domain.boundary_conditions:
             bc.evaluate(f=f)
             A_r += bc.A_r
@@ -73,18 +81,21 @@ class FEM:
             b_r += bc.b_r
             b_c += bc.b_c
             b_v += bc.b_v
-            deleted_rows += bc.deleted_rows
-            deleted_cols += bc.deleted_cols
+            self.removed_nodes += bc.null_nodes
 
-        self.A = sparse.csr_matrix((A_v, (A_r, A_c)),
-                shape=(len(self.mesh.nodes),len(self.mesh.nodes)))
-        self.b = sparse.csr_matrix((b_v, (b_r, b_c)), shape=(len(self.mesh.nodes),1))
+        for n in self.removed_nodes:
+            self.map_dof_node.remove(n)
+
+        self.A = sparse.csr_matrix((A_v, (A_r, A_c)), dtype=np.complex128)
+        self.b = sparse.csr_matrix((b_v, (b_r, b_c)), shape=(len(self.mesh.nodes),1), dtype=np.complex128)
         self.b = self.b.toarray()
 
+        deleted_rows = self.removed_nodes
         rows_mask = np.ones(self.A.shape[0], dtype=bool)
         rows_mask[deleted_rows] = False
         self.A = self.A[rows_mask]
 
+        deleted_cols = self.removed_nodes
         self.A = self.A.tocsc()
         all_cols = np.arange(self.A.shape[1])
         cols_to_keep = np.where(np.logical_not(np.in1d(all_cols, deleted_cols)))[0]
@@ -99,5 +110,8 @@ class FEM:
             raise ValueError('System flagged as assembled but no value found.')
 
         self.x = sparse.linalg.spsolve(self.A, self.b)
-        return self.x
+
+        self.solution = np.zeros((len(self.mesh.nodes),), dtype=np.complex128)
+        self.solution[np.r_[self.map_dof_node]] = self.x
+        return self.solution
 

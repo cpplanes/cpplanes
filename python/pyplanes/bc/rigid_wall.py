@@ -26,22 +26,13 @@ from .base_bc import BoundaryCondition
 
 class RigidWall(BoundaryCondition):
     """
-    Forces to zeros all nodes on the concerned edge
+    Rigid wall (just do nothing and succeed anyway)
     """
 
-    def __init__(self, edges):
-        super().__init__(edges=edges)
+    def __init__(self, edges, material):
+        super().__init__(edges=edges, material=material)
 
     def evaluate(self, f):
-        self.A_r = []
-        self.A_c = []
-        self.A_v = []
-        self.b_r = []
-        self.b_c = []
-        self.b_v = []
-        self.deleted_rows = self.all_node_ids
-        self.deleted_cols = self.all_node_ids
-
         return True
 
 

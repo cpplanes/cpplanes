@@ -23,6 +23,10 @@
 #
 
 class Domain:
+    """
+    Stores a Domain (i.e. a mesh, material and associated boundary conditions) one then
+    feeds to a method
+    """
 
     def __init__(self, mesh, material, boundary_conditions=None):
         self.mesh = mesh

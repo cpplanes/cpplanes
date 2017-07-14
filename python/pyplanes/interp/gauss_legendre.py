@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding:utf8 -*-
 #
-# base_interp.py
+# gauss_legendre.py
 #
 # This file is part of cpplanes, a software distributed under the MIT license.
 # For any question, please contact one of the authors cited below.
@@ -22,14 +22,15 @@
 # copies or substantial portions of the Software.
 #
 
-class Interpolator:
+class GaussLegendre:
     """
-    Base class for interpolation techniques
+    Storage class for Gauss-Legendre coefficients and easy access later
     """
 
-    def __init__(self):
-        pass
-
-    def interpolate_over(self, element):
-        pass
-
+    Order = {
+        4: {
+            'nb_interp_points': 6,
+            'x_i': [0.445948490915965, 0.091576213509771],
+            'w_i': [0.111690794839005, 0.054975871827661]
+        }
+    }

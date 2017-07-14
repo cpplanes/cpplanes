@@ -25,10 +25,28 @@
 from functools import reduce
 
 class BoundaryCondition:
+    """
+    Base class for boundary conditions
 
-    def __init__(self, edges):
+    Boundary conditions are evaluated by calling BC.evaluate(frequency). The alterations
+    on A and b are stored in COO format right in the BC instantiated object.
+    Nodes to be removed from the linear system are not deleted right away but marked
+    for deletion, allowing to evaluation BC in any order (parallelization in mind!)
+
+
+    Improvement:
+    We could drop b's column index vector since b is a column vector itself.
+    """
+
+    def __init__(self, edges, material):
+        """ Constructor
+        edges -- edges on which the BC is applied
+        material -- material in the domain (to be modified & passed by evaluate() )
+        """
         self.edges = edges
+        self.material = material
 
+        # maintain a list of affected nodes for easy access
         self.all_node_ids = list(set(
             reduce(
                 lambda acc, b: acc+b.node_ids,
@@ -37,14 +55,17 @@ class BoundaryCondition:
             )
         ))
 
-    def evaluate(self, f):
+        # prepare storage of end-value
         self.A_r = []
         self.A_c = []
         self.A_v = []
         self.b_r = []
         self.b_c = []
         self.b_v = []
-        self.deleted_rows = []
-        self.deleted_cols = []
+        self.null_nodes = []
 
-        return True
+    def evaluate(self, f):
+        """
+        Evaluate the boundary condition & return True if successful
+        """
+        return False

@@ -43,30 +43,3 @@ class Mesh1D(Mesh):
         self.nodes = [(_*self.node_spacing,) for _ in range(self.N+1)]
         self.elements = [(_, _+1) for _ in range(len(self.nodes)-1)]
         self.edges = [[_] for _ in range(len(self.nodes))]
-
-    def get_element(self, element_ids):
-        if type(element_ids)!=list:
-            return Element(
-                    nodes = [self.nodes[_] for _ in self.elements[element_ids]],
-                    node_ids = self.elements[element_ids]
-                    )
-        else:
-            return [
-                    Element(
-                        nodes = [self.nodes[_] for _ in self.elements[eid]],
-                        node_ids = self.elements[eid]
-                    ) for eid in element_ids]
-
-    def get_edge(self, edge_ids):
-        if type(edge_ids)!=list:
-            return Edge(
-                    nodes = [self.nodes[_] for _ in self.edges[edge_ids]],
-                    node_ids = self.edges[edge_ids]
-                    )
-        else:
-            return [
-                    Edge(
-                        nodes = [self.nodes[_] for _ in self.edges[eid]],
-                        node_ids = self.edges[eid]
-                    ) for eid in edge_ids]
-

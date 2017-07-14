@@ -34,11 +34,11 @@ def freefem_read(filename):
 
         remaining = fh.readlines()
 
-    node_related_lines = remaining[:Nnodes-1]
+    node_related_lines = remaining[:Nnodes]
     remaining = remaining[Nnodes:]
-    element_related_lines = remaining[:Nelements-1]
+    element_related_lines = remaining[:Nelements]
     remaining = remaining[Nelements:]
-    edge_related_lines = remaining[:Nedges-1]
+    edge_related_lines = remaining[:Nedges]
     remaining = remaining[Nedges:]
 
     if len(remaining)!=0:
@@ -47,16 +47,16 @@ def freefem_read(filename):
     # insert into a mesh object
     mesh = Mesh()
 
-    cleaner = lambda _: map(float, _.split(' '))
+    cleaner = lambda _: map(int, _.split(' '))
+
     nodes_raw = map(
-        cleaner,
+            lambda _: _.split(' '),
         node_related_lines
     )
-
     for e in nodes_raw:
         e = list(e)
-        mesh.nodes.append((e[0], e[1]))
-        mesh.nodes_labels.append(e[2])
+        mesh.nodes.append((float(e[0]), float(e[1])))
+        mesh.nodes_labels.append(int(e[2]))
 
     del nodes_raw
     del node_related_lines
@@ -68,7 +68,7 @@ def freefem_read(filename):
 
     for e in elements_raw:
         e = list(e)
-        mesh.elements.append((e[0], e[1], e[2]))
+        mesh.elements.append([e[0]-1, e[1]-1, e[2]-1])
         mesh.elements_labels.append(e[3])
 
     del elements_raw
@@ -81,7 +81,7 @@ def freefem_read(filename):
 
     for e in edges_raw:
         e = list(e)
-        mesh.edges.append((e[0], e[1]))
+        mesh.edges.append([e[0]-1, e[1]-1])
         mesh.edges_labels.append(e[2])
 
     del edges_raw

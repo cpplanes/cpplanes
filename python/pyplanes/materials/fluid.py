@@ -27,6 +27,13 @@ import numpy as np
 from .base_material import Material
 
 class Fluid(Material):
+    """ Fluid medium class
+
+    To do:
+    - use the right parameters (not only rho and c)
+    - implement a refresh() function to recompute the
+      frequency dependent variables
+    """
 
     def __init__(self, rho, c):
         super().__init__()

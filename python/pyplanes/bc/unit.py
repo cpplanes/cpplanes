@@ -22,27 +22,36 @@
 # copies or substantial portions of the Software.
 #
 
+import numpy as np
+
 from .base_bc import BoundaryCondition
+from ..materials import Fluid
 
-class UnitPressure(BoundaryCondition):
+class UnitVelocity(BoundaryCondition):
     """
-    Apply a unit pressure on the desired nodes
+    Forces a unit velocity on the desired nodes
     """
 
-    def __init__(self, edges):
-        super().__init__(edges=edges)
+    def __init__(self, edges, material):
+        super().__init__(edges=edges, material=material)
 
     def evaluate(self, f):
-        self.A_r = []
-        self.A_c = []
-        self.A_v = []
-        self.b_r = self.all_node_ids
-        self.b_c = [0]*len(self.all_node_ids)
-        self.b_v = [1]*len(self.all_node_ids)
-        self.deleted_rows = []
-        self.deleted_cols = []
 
-        return True
+        if isinstance(self.material, Fluid):
+            """ Unit velocity for fluids
+
+            grad(p) = j rho omega v
+
+            The alteration is done in b only, A is left untouched.
+            """
+
+
+            omega = 2*np.pi*f
+            self.b_r = self.all_node_ids
+            self.b_c = [0]*len(self.all_node_ids)
+            self.b_v = [1j*self.material.rho*omega]*len(self.all_node_ids)
+
+            return True
 
 
 
