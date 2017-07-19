@@ -24,10 +24,33 @@
 
 from .base_integration import IntegrationScheme
 
-
 class GaussLegendre(IntegrationScheme):
     """
-    Storage class for Gauss-Legendre coefficients and easy access later
+    Storage class for Gauss-Legendre quadrature coefficients
+    """
+
+    Order = {
+        4: {
+            'nb_interp_points': 4,
+            'x_i': [
+                 0.339981043584856,
+                -0.339981043584856,
+                 0.861136311594053,
+                -0.861136311594053
+            ],
+            'w_i': [
+                0.652145154862546,
+                0.652145154862546,
+                0.347854845137454,
+                0.347854845137454
+            ]
+        }
+    }
+
+
+class GaussLegendreTriangle(IntegrationScheme):
+    """
+    Storage class for Gauss-Legendre quadrature coefficients on a triangle
     """
 
     Order = {

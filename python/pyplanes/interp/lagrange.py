@@ -25,7 +25,7 @@
 import numpy as np
 
 from .base_interp import Interpolator
-from ..integration.gauss_legendre import GaussLegendre
+from ..integration.gauss_legendre import GaussLegendreTriangle
 
 class LinearLagrangeInterpolator(Interpolator):
     """ Linear interpolator using a set of Lagrange shape functions
@@ -36,7 +36,7 @@ class LinearLagrangeInterpolator(Interpolator):
     H : Phi'*Phi'
     """
 
-    def __init__(self, dim=1, integration_scheme=GaussLegendre):
+    def __init__(self, dim=1, integration_scheme=GaussLegendreTriangle):
 
         super().__init__()
         self.dim = dim
@@ -88,38 +88,36 @@ class LinearLagrangeInterpolator(Interpolator):
         w0 = GP['w_i'][0]
         w1 = GP['w_i'][1]
 
-        ksi_eta_map = [
+        ksi_eta_map = np.array([
             [x0, x0],
             [1-2*x0, x0],
             [x0, 1-2*x0],
             [x1, x1],
             [1-2*x1, x1],
             [x1, 1-2*x1]
-        ]
+        ])
 
         weights = 3*[w0]+3*[w1]
 
         H = np.zeros((3,3))
         Q = np.zeros((3,3))
 
+        interp_fun_deriv = np.array([
+            [-1, 1, 0],
+            [-1, 0, 1]
+        ], dtype=np.float64)
         for i_pg in range(GP['nb_interp_points']):
-
-            ksi = ksi_eta_map[i_pg][0]
-            eta = ksi_eta_map[i_pg][1]
+            ksi = ksi_eta_map[i_pg, 0]
+            eta = ksi_eta_map[i_pg, 1]
 
             interp_fun = np.array([1-ksi-eta, ksi, eta])
-            interp_fun_deriv = np.array([
-                [-1, 1, 0],
-                [-1, 0, 1]
-            ], dtype=np.float64)
 
-            J = interp_fun_deriv@nodes
+            J = np.dot(interp_fun_deriv, nodes)
             w = weights[i_pg]*np.linalg.det(J)
 
-            JinvInterpDeriv = np.linalg.inv(J)@interp_fun_deriv
-            H += JinvInterpDeriv.T@JinvInterpDeriv*w;
+            JinvInterpDeriv = np.dot(np.linalg.inv(J), interp_fun_deriv)
+            H += w*np.dot(JinvInterpDeriv.T, JinvInterpDeriv)
 
-            Q += interp_fun.T@interp_fun*w
+            Q += w*np.outer(interp_fun, interp_fun)
 
-        return (H, Q)
-
+        return (Q, H)

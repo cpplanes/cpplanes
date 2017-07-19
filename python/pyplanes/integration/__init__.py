@@ -23,6 +23,6 @@
 #
 
 from .base_integration import IntegrationScheme
-from .gauss_legendre import GaussLegendre
+from .gauss_legendre import GaussLegendre, GaussLegendreTriangle
 
 
