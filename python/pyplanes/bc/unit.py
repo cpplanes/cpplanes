@@ -26,6 +26,7 @@ import numpy as np
 
 from .base_bc import BoundaryCondition
 from ..materials import Fluid
+from ..integration import GaussLegendre
 
 class UnitVelocity(BoundaryCondition):
     """
@@ -36,7 +37,6 @@ class UnitVelocity(BoundaryCondition):
         super().__init__(edges=edges, material=material)
 
     def evaluate(self, f):
-
         if isinstance(self.material, Fluid):
             """ Unit velocity for fluids
 
@@ -44,14 +44,36 @@ class UnitVelocity(BoundaryCondition):
 
             The alteration is done in b only, A is left untouched.
             """
-
-
             omega = 2*np.pi*f
-            self.b_r = self.all_node_ids
-            self.b_c = [0]*len(self.all_node_ids)
-            self.b_v = [1j*self.material.rho*omega]*len(self.all_node_ids)
 
-            return True
+            if self.edges[0].dimension==1:
+                self.b_r = self.get_all_node_ids()
+                self.b_c = [0]*len(self.b_r)
+                self.b_v = [1j*self.material.rho*omega]*len(self.b_r)
+
+            elif self.edges[0].dimension==2:
+                for e in self.edges:
+
+                    current_b_v = np.array([0,0], dtype=np.complex128)
+
+                    GP = GaussLegendre.get_order(4)
+                    for i in range(GP['nb_interp_points']):
+                        x_i = GP['x_i'][i]
+                        w_i = GP['w_i'][i]
+                        current_b_v += np.array([
+                            (1-x_i)/2,
+                            (1+x_i)/2
+                        ], dtype=np.complex128)*w_i
+                    current_b_v *= (e.get_length()/2)*(1j*self.material.rho*omega)
+
+                    self.b_v += current_b_v.tolist()
+                    self.b_c += [0]*len(e.nodes)
+                    self.b_r += e.node_ids
+            else:
+                return False
+        else:
+            return False
+        return True
 
 
 
