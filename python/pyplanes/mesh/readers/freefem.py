@@ -45,7 +45,7 @@ def freefem_read(filename):
         print('May be an issue while reading the mesh')
 
     # insert into a mesh object
-    mesh = Mesh()
+    mesh = Mesh(dimension=2)
 
     cleaner = lambda _: map(int, _.split(' '))
 

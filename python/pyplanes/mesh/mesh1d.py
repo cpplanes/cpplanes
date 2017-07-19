@@ -32,7 +32,7 @@ class Mesh1D(Mesh):
         start: start coordinate
         N: number of elements
         """
-        super().__init__()
+        super().__init__(dimension=1)
 
         self.start = start
         self.end = start+length
