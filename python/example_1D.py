@@ -13,13 +13,13 @@
 
 # from functools import reduce
 from matplotlib import pyplot as plt
+import numpy as np
 
 from pyplanes.mesh import Mesh1D
-from pyplanes.bc import RigidWall, UnitPressure
+from pyplanes.bc import RigidWall, UnitVelocity
 from pyplanes.interp import LinearLagrangeInterpolator
 from pyplanes.materials import Fluid
-from pyplanes.domain import Domain
-from pyplanes.FEM import FEM
+from pyplanes.domain import FEMDomain
 
 
 
@@ -28,28 +28,19 @@ f = 200;
 
 mesh = Mesh1D(1, N=40)
 air = Fluid(rho=1.241, c=343)
-left_exc = UnitPressure(edges=mesh.get_edge([0]))
-right_wall = RigidWall(edges=mesh.get_edge([-1]))
-
-domain = Domain(mesh=mesh, material=air, boundary_conditions=[left_exc, right_wall])
+left_exc = UnitVelocity(edges=mesh.get_edge([0]), material=air)
+right_wall = RigidWall(edges=mesh.get_edge([-1]), material=air)
 
 interp = LinearLagrangeInterpolator(dim=1)
 
-FE_system = FEM(domain=domain, interp=interp)
-# FE_system.assemble(f=f)
+domain = FEMDomain(mesh=mesh, interp=interp, material=air,
+        boundary_conditions=[left_exc, right_wall])
 
-# A = csr_matrix(FE_system.A)
-# A = A[:-1,:]
-# A = csc_matrix(A)
-# A = A[:,:-1]
-#
-# b = FE_system.b
-# b[0] = 1
-# b = b[:-1]
+domain.solve(f=f)
 
-x = FE_system.solve(f=f)
+node_coords = np.array(mesh.nodes)
 
 plt.figure()
-plt.plot(mesh.nodes[:-1], x)
+plt.plot(node_coords[:,0], np.absolute(domain.solution), marker='+', linestyle='None')
 plt.show()
 

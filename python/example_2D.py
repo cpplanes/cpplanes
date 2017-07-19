@@ -28,7 +28,7 @@ import numpy as np
 from pyplanes.mesh.readers import freefem_read
 from pyplanes.bc import RigidWall, UnitVelocity
 from pyplanes.interp import LinearLagrangeInterpolator
-from pyplanes.integration import GaussLegendre
+from pyplanes.integration import GaussLegendreTriangle
 from pyplanes.materials import Fluid
 from pyplanes.domain import FEMDomain
 
@@ -51,15 +51,25 @@ air = Fluid(rho=1.213, c=343)
 bc_rigid= RigidWall(edges=list(map(mesh.get_edge, edges_bc_rigid)), material=air)
 bc_unit = UnitVelocity(edges=list(map(mesh.get_edge, edges_bc_unit)), material=air)
 
-interp = LinearLagrangeInterpolator(dim=2, integration_scheme=GaussLegendre)
+interp = LinearLagrangeInterpolator(dim=2, integration_scheme=GaussLegendreTriangle)
 
 domain = FEMDomain(mesh=mesh, material=air, boundary_conditions=[bc_unit, bc_rigid], interp=interp)
 
 domain.solve(f=f)
 
-plt.figure()
 node_coords = np.array(mesh.nodes)
+# reference solution
+k = air.get_wavenumber(f)
+L = 1  # length of the tube
+reference = air.rho*air.c*np.cos(k*(node_coords[:,0]-L))/(1j*np.sin(k*L))
+
+plt.figure()
 plt.plot(node_coords[:,0], np.absolute(domain.solution), marker='+', linestyle='None')
+plt.plot(node_coords[:,0], np.absolute(reference), marker='.', color='r', linestyle='None')
+
+plt.figure()
+plt.plot(node_coords[:,0], np.imag(domain.solution), marker='+', linestyle='None')
+plt.plot(node_coords[:,0], np.imag(reference), marker='.', color='r', linestyle='None')
 
 plt.figure()
 plt.tricontourf(node_coords[:,0], node_coords[:,1], mesh.elements, np.absolute(domain.solution))
