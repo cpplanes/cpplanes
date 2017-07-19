@@ -46,14 +46,7 @@ class BoundaryCondition:
         self.edges = edges
         self.material = material
 
-        # maintain a list of affected nodes for easy access
-        self.all_node_ids = list(set(
-            reduce(
-                lambda acc, b: acc+b.node_ids,
-                self.edges,
-                []
-            )
-        ))
+        self.__all_node_ids = None
 
         # prepare storage of end-value
         self.A_r = []
@@ -69,3 +62,23 @@ class BoundaryCondition:
         Evaluate the boundary condition & return True if successful
         """
         return False
+
+
+    def get_all_node_ids(self):
+        """
+        Returns a list of all affected nodes
+        Useful for 1D (and a few other) boundary conditions
+
+        The list is cached for easy access
+        """
+
+        if not self.__all_node_ids:
+            self.__all_node_ids = list(set(
+                reduce(
+                    lambda acc, b: acc+b.node_ids,
+                    self.edges,
+                    []
+                )
+            ))
+
+        return self.__all_node_ids
