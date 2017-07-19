@@ -84,8 +84,8 @@ class FEM:
         for n in self.removed_nodes:
             self.map_dof_node.remove(n)
 
-        self.A = sparse.csr_matrix((A_v, (A_r, A_c)), dtype=np.complex128)
-        self.b = sparse.csr_matrix((b_v, (b_r, b_c)), shape=(len(self.mesh.nodes),1), dtype=np.complex128)
+        self.A = sparse.coo_matrix((A_v, (A_r, A_c)), dtype=np.complex128).tocsr()
+        self.b = sparse.coo_matrix((b_v, (b_r, b_c)), shape=(self.A.shape[0],1), dtype=np.complex128)
         self.b = self.b.toarray()
 
         deleted_rows = self.removed_nodes
