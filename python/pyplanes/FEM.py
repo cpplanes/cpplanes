@@ -62,8 +62,8 @@ class FEM:
 
         for element in (self.mesh.get_element(_) for _ in range(len(self.mesh.elements))):
 
-            (Me, Ke) = self.interp.interpolate_over(element)
-            elem_matrix = Ke-k**2*Me
+            (Qe, He) = self.interp.interpolate_over(element)
+            elem_matrix = He-k**2*Qe
 
             for i_n1, n1 in enumerate(element.node_ids):
                 for i_n2, n2 in enumerate(element.node_ids):

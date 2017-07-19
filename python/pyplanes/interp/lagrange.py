@@ -32,8 +32,8 @@ class LinearLagrangeInterpolator(Interpolator):
     and Gauss-Legendre as integration strategy.
 
 
-    H : Phi*Phi
-    Q : Phi'*Phi'
+    Q : Phi*Phi
+    H : Phi'*Phi'
     """
 
     def __init__(self, dim=1, integration_scheme=GaussLegendre):
@@ -43,8 +43,8 @@ class LinearLagrangeInterpolator(Interpolator):
         self.__integration_scheme = integration_scheme
 
         if self.dim==1:
-            self.__H = 1/6*np.matrix([[2, 1], [1, 2]])
-            self.__Q = np.matrix([[1, -1], [-1, 1]])
+            self.__Q = 1/6*np.matrix([[2, 1], [1, 2]])
+            self.__H = np.matrix([[1, -1], [-1, 1]])
             self.__last_h = None
 
     def interpolate_over(self, element):
@@ -65,8 +65,8 @@ class LinearLagrangeInterpolator(Interpolator):
         if self.__last_h!=h:
             self.__last_h = h
             self.__interpolated_tuple = (
-                    h*self.__H,
-                    1/h*self.__Q
+                    h*self.__Q,
+                    1/h*self.__H
                     )
         return self.__interpolated_tuple
 
