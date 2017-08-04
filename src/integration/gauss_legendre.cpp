@@ -1,5 +1,5 @@
 /*
- * Mesh.h
+ * gauss_legendre.cpp
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -21,52 +21,30 @@
  *
  */
 
-#ifndef __Mesh_h__
-#define __Mesh_h__
+#include "gauss_legendre.h"
+#include "integration_scheme.h"
 
-#include "config.h"
+namespace cpplanes {
+	namespace integration {
 
-#include <array>
-#include <vector>
+		const coef_storage_t GaussLegendre::orders = {
+			{	4, {
+					{0.339981043584856, 0.652145154862546},
+					{-0.339981043584856, 0.652145154862546},
+					{0.861136311594053, 0.347854845137454},
+					{-0.861136311594053, 0.347854845137454}
+				}
+			}
+		};
 
-namespace mesh {
+		const coef_storage_t GaussLegendreTriangle::orders = {
+			{	4, {
+					{0.445948490915965, 0.111690794839005},
+					{0.091576213509771, 0.054975871827661}
+				}
+			}
+		};
 
-class Element {
-public:
-	std::array<int, MAX_NODES_PER_ELEMENT> nodes = {-1};
-	int nb_nodes;
-};
-
-class Edge {
-public:
-	std::array<int, MAX_NODES_PER_EDGE> nodes = {-1};
-	std::array<int, MAX_ELEMENTS_PER_EDGE> elements = {-1};
-	// linsys::BC type;
-};
-
-class Node {
-public:
-	int index;
-	std::array<int, MAX_COORDS_PER_NODE> coords = {-1};
-};
-
-class Mesh {
-	/*
-	 * A mesh stores the geometrical features (nodes and positions, edges, connectivity
-	 * tables and elements).
-	 *
-	 */
-
-private:
-protected:
-public:
-	std::vector<Element> elements;
-	std::vector<Edge> edges;
-	std::vector<Node> nodes;
-	Mesh slice(std::vector<Node> nodes);
-};
-
+	}
 }
-
-#endif /* !__Mesh_h__ */
 

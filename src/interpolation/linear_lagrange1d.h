@@ -1,5 +1,5 @@
 /*
- * Mesh.cxx
+ * linear_lagrange1d.h
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -21,9 +21,31 @@
  *
  */
 
-#include "Mesh.h"
+#pragma once
 
-namespace mesh {
+#include <Eigen/Dense>
+
+#include "linear_lagrange.h"
+#include "../types.h"
+
+using namespace Eigen;
+using cpplanes::Matrix2r;
+
+namespace cpplanes {
+
+	class LinearLagrange1D : LinearLagrange<Element1D, Matrix2r> {
+	private:
+		int integration_order;
+		Matrix2r unit_H, unit_Q;
+
+	public:
+		LinearLagrange1D(
+			integration::IntegrationScheme integration_scheme,
+			int integration_order
+		);
+
+		virtual void get_H(Element1D const& element, Matrix2r const& H_);
+		virtual void get_Q(Element1D const& element, Matrix2r const& Q_);
+	};
 
 }
-

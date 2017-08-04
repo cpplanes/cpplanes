@@ -1,5 +1,5 @@
 /*
- * config.h
+ * base_mesh.h
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -23,10 +23,35 @@
 
 #pragma once
 
-#define MAX_NODES_PER_ELEMENT 3
-#define MAX_NODES_PER_EDGE 1
-#define MAX_COORDS_PER_NODE 1
+#include <vector>
 
-// this is not a max but a mean (think 3D)
-#define ELEMENTS_PER_EDGE 2
+#include "edge.h"
+#include "element.h"
+#include "mesh.h"
 
+namespace cpplanes {
+
+	template <typename _ElementT, typename _EdgeT>
+	class BaseMesh : MeshRoot {
+	protected:
+		/* Storage */
+		std::vector<std::vector<int>> elements;
+		std::vector<std::vector<int>> edges;
+		std::vector<std::vector<real_t>> nodes;
+
+		const MeshConfig config = {
+			_ElementT::dimension,
+			_ElementT::nb_nodes
+		};
+
+	public:
+		_ElementT get_element(int id);
+		_EdgeT get_edge(int id);
+
+		typedef _ElementT ElementT;
+		typedef _EdgeT EdgeT;
+
+		inline int get_nb_elements() { return elements.size(); };
+	};
+
+}

@@ -1,5 +1,5 @@
 /*
- * config.h
+ * base_mesh.cpp
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -21,12 +21,32 @@
  *
  */
 
-#pragma once
+#include "base_mesh.h"
 
-#define MAX_NODES_PER_ELEMENT 3
-#define MAX_NODES_PER_EDGE 1
-#define MAX_COORDS_PER_NODE 1
+namespace cpplanes {
 
-// this is not a max but a mean (think 3D)
-#define ELEMENTS_PER_EDGE 2
+	template <typename _ElementT, typename _EdT>
+	_ElementT BaseMesh<_ElementT, _EdT>::get_element(int id) {
+		// TODO : bound testing & custom exception
+		std::vector<int> nodes_id = elements.at(id);
+		std::vector<std::vector<real_t>> nodes_coords(nodes_id.size());
+		for (auto n_id : nodes_id) {
+			nodes_coords.push_back(nodes.at(n_id));
+		}
+
+		return _ElementT(nodes_id, nodes_coords, config.dimension);
+	}
+
+	template <typename _ElT, typename _EdgeT>
+	_EdgeT BaseMesh<_ElT, _EdgeT>::get_edge(int id) {
+		// TODO : bound testing & custom exception
+		std::vector<int> nodes_id = edges.at(id);
+		std::vector<std::vector<real_t>> nodes_coords(nodes_id.size());
+		for (auto n_id : nodes_id) {
+			nodes_coords.push_back(nodes.at(n_id));
+		}
+
+		return _EdgeT(nodes_id, nodes_coords, config.dimension);
+	}
+}
 

@@ -1,5 +1,5 @@
 /*
- * config.h
+ * mesh.h
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -23,10 +23,15 @@
 
 #pragma once
 
-#define MAX_NODES_PER_ELEMENT 3
-#define MAX_NODES_PER_EDGE 1
-#define MAX_COORDS_PER_NODE 1
+namespace cpplanes {
 
-// this is not a max but a mean (think 3D)
-#define ELEMENTS_PER_EDGE 2
+	class MeshRoot {};
+
+	class MeshConfig {
+	public:
+		const int dimension;
+		const int nodes_per_element;
+	};
+
+}
 

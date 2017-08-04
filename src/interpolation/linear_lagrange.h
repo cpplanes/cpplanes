@@ -1,5 +1,5 @@
 /*
- * config.h
+ * linear_lagrange.h
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -23,10 +23,27 @@
 
 #pragma once
 
-#define MAX_NODES_PER_ELEMENT 3
-#define MAX_NODES_PER_EDGE 1
-#define MAX_COORDS_PER_NODE 1
+#include <Eigen/Core>
 
-// this is not a max but a mean (think 3D)
-#define ELEMENTS_PER_EDGE 2
+#include "interpolator.h"
+#include "../integration/integration_scheme.h"
+
+namespace cpplanes {
+
+	template <typename _ElementT, typename _MatrixT>
+	class LinearLagrange : public Interpolator<_ElementT, _MatrixT> {
+	private:
+		integration::IntegrationScheme integration_scheme;
+
+	public:
+		LinearLagrange(
+			integration::IntegrationScheme integration_scheme,
+			int dimension = -1
+		);
+
+		virtual void get_Q(_ElementT const& element, _MatrixT const& Q_);
+		virtual void get_H(_ElementT const& element, _MatrixT const& H_);
+	};
+
+}
 

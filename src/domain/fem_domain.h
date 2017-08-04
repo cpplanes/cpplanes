@@ -1,5 +1,5 @@
 /*
- * config.h
+ * fem_domain.h
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -23,10 +23,29 @@
 
 #pragma once
 
-#define MAX_NODES_PER_ELEMENT 3
-#define MAX_NODES_PER_EDGE 1
-#define MAX_COORDS_PER_NODE 1
+#include <vector>
 
-// this is not a max but a mean (think 3D)
-#define ELEMENTS_PER_EDGE 2
+#include "base_domain.h"
+#include "../FEM/FEM.h"
+#include "../mesh/base_mesh.h"
+#include "../medium/medium.h"
+#include "../bc/boundary_condition.h"
+#include "../interpolation/interpolator.h"
+
+namespace cpplanes {
+
+	template <typename T>
+	class FEMDomain: public BaseDomain, public FEM {
+
+	public:
+		FEMDomain(
+			BaseMesh mesh,
+			PhysicalModel medium,
+			std::vector<BoundaryCondition> boundary_conditions,
+			Interpolator<T> Interpolator
+		);
+
+	};
+
+}
 

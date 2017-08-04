@@ -20,7 +20,7 @@ find_package(Eigen3 REQUIRED)
 include_directories(${EIGEN3_INCLUDE_DIR})
 
 
-file(GLOB SOURCES src/*.cxx)
+file(GLOB_RECURSE SOURCES src/*.cpp)
 
 # Create shared library
 add_library(${PROJECT_NAME} SHARED ${SOURCES})

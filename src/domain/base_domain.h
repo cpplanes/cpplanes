@@ -1,5 +1,5 @@
 /*
- * LinearSystem.cpp
+ * base_domain.h
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -21,35 +21,36 @@
  *
  */
 
-#include "LinearSystem.h"
-#include "utils.h"
+#pragma once
 
-namespace linsys {
+#include <memory>
+#include <vector>
 
-int LinearSystem::get_linsys_size() {
-	if (linsys_size > -1) {
-		return linsys_size;
-	}
+#include "../mesh/base_mesh.h"
+#include "../medium/medium.h"
+#include "../bc/bc.h"
 
-	linsys_size = 0;
-	for (auto d : domains) {
-		linsys_size += d.get_nbdof();
-	}
+namespace cpplanes {
 
-	return linsys_size;
+	template <typename _MeshT>
+	class BaseDomain {
+		/**
+		 * Base class for domain handling
+		 *
+		 * To be subclassed and templated for the different use cases
+		 */
+	private:
+		_MeshT mesh;
+		PhysicalModel medium;
+		std::vector<std::shared_ptr<BCBase>> boundary_conditions;
+		// TODO: replace !
+
+	public:
+		BaseDomain(
+			_MeshT mesh,
+			PhysicalModel medium,
+			std::vector<std::shared_ptr<BCBase>> boundary_conditions);
+	};
+
 }
-
-bool LinearSystem::assemble(cplx_t frequency) {
-	int linsys_size = get_linsys_size();
-
-	SparseMatrix<cplx_t> A(linsys_size, linsys_size);
-	for (auto d : domains) {
-		d.assemble(frequency, linsys_size);
-	}
-
-	return true;
-}
-
-}
-
 

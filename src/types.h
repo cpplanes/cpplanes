@@ -1,5 +1,5 @@
 /*
- * config.h
+ * types.h
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -23,10 +23,20 @@
 
 #pragma once
 
-#define MAX_NODES_PER_ELEMENT 3
-#define MAX_NODES_PER_EDGE 1
-#define MAX_COORDS_PER_NODE 1
+#include <complex>
 
-// this is not a max but a mean (think 3D)
-#define ELEMENTS_PER_EDGE 2
+#include <Eigen/Dense>
+
+namespace cpplanes {
+	using real_t = long double;
+	using cplx_t = std::complex<real_t>;
+
+	using VectorXr = Eigen::Matrix<real_t, Eigen::Dynamic, 1>;
+	using Vector2r = Eigen::Matrix<real_t, 2, 1>;
+	using VectorXc = Eigen::Matrix<cplx_t, Eigen::Dynamic, 1>;
+
+	using MatrixXr = Eigen::Matrix<real_t, Eigen::Dynamic, Eigen::Dynamic>;
+	using Matrix2r = Eigen::Matrix<real_t, 2,  2>;
+	using MatrixXc = Eigen::Matrix<cplx_t, Eigen::Dynamic, Eigen::Dynamic>;
+}
 
