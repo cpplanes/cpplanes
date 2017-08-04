@@ -41,7 +41,7 @@ script:
   # Check versions first
   - $CC -v && $CXX -v
   - cmake --version
-  - ./fetch_deps.sh
+  - ./utils/fetch_deps.sh
   # then build
   - mkdir build && cd build && cmake .. && make
 
