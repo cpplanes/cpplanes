@@ -24,7 +24,8 @@
 
 import numpy as np
 import scipy.sparse as sparse
-from scipy.sparse.linalg import spsolve
+import scipy.sparse.linalg as splinalg
+
 
 class FEM:
     """ Finite Element procedure
@@ -107,7 +108,7 @@ class FEM:
         if self.A is None or self.b is None:
             raise ValueError('System flagged as assembled but no value found.')
 
-        self.x = sparse.linalg.spsolve(self.A, self.b)
+        self.x = splinalg.spsolve(self.A, self.b)
 
         self.solution = np.zeros((len(self.mesh.nodes),), dtype=np.complex128)
         self.solution[np.r_[self.map_dof_node]] = self.x
