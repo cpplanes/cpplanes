@@ -41,14 +41,14 @@ namespace cpplanes {
 		 */
 	private:
 		_MeshT mesh;
-		PhysicalModel medium;
+		PhysicalModel& medium;
 		std::vector<std::shared_ptr<BCBase>> boundary_conditions;
 		// TODO: replace !
 
 	public:
 		BaseDomain(
 			_MeshT mesh,
-			PhysicalModel medium,
+			PhysicalModel& medium,
 			std::vector<std::shared_ptr<BCBase>> boundary_conditions);
 	};
 
