@@ -34,9 +34,9 @@ namespace cpplanes {
 		const int state_vector_size;
 		const int nbdof_fem_by_node;
 
-		virtual cplx_t get_Pwn(cplx_t frequency) const;
-		virtual cplx_t get_S1wn(cplx_t frequency) const;
-		virtual cplx_t get_S2wn(cplx_t frequency) const;
+		virtual cplx_t get_Pwn(cplx_t frequency) const= 0;
+		virtual cplx_t get_S1wn(cplx_t frequency) const = 0;
+		virtual cplx_t get_S2wn(cplx_t frequency) const = 0;
 	};
 
 }

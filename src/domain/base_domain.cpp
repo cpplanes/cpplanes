@@ -31,7 +31,7 @@ namespace cpplanes {
 	template <typename _MeshT>
 	BaseDomain<_MeshT>::BaseDomain(
 		_MeshT mesh,
-		PhysicalModel medium,
+		PhysicalModel& medium,
 		std::vector<std::shared_ptr<BCBase>> boundary_conditions):
 		mesh(mesh), medium(medium), boundary_conditions(boundary_conditions)
 	{
