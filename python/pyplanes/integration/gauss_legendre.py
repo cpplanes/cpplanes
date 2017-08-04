@@ -24,6 +24,7 @@
 
 from .base_integration import IntegrationScheme
 
+
 class GaussLegendre(IntegrationScheme):
     """
     Storage class for Gauss-Legendre quadrature coefficients

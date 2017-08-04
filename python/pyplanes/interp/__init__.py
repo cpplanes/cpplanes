@@ -24,4 +24,3 @@
 
 from .base_interp import Interpolator
 from .lagrange import LinearLagrangeInterpolator
-

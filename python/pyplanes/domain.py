@@ -24,6 +24,7 @@
 
 from .FEM import FEM
 
+
 class BaseDomain:
     """
     Stores a Domain (i.e. a mesh, material and associated boundary conditions) one then

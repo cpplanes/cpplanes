@@ -28,6 +28,7 @@ from .base_bc import BoundaryCondition
 from ..materials import Fluid
 from ..integration import GaussLegendre
 
+
 class UnitVelocity(BoundaryCondition):
     """
     Forces a unit velocity on the desired nodes
@@ -46,12 +47,12 @@ class UnitVelocity(BoundaryCondition):
             """
             omega = 2*np.pi*f
 
-            if self.edges[0].dimension==1:
+            if self.edges[0].dimension == 1:
                 self.b_r = self.get_all_node_ids()
                 self.b_c = [0]*len(self.b_r)
                 self.b_v = [1j*self.material.rho*omega]*len(self.b_r)
 
-            elif self.edges[0].dimension==2:
+            elif self.edges[0].dimension == 2:
                 for e in self.edges:
 
                     current_b_v = np.array([0,0], dtype=np.complex128)
@@ -74,6 +75,3 @@ class UnitVelocity(BoundaryCondition):
         else:
             return False
         return True
-
-
-

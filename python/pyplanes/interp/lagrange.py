@@ -27,6 +27,7 @@ import numpy as np
 from .base_interp import Interpolator
 from ..integration.gauss_legendre import GaussLegendreTriangle
 
+
 class LinearLagrangeInterpolator(Interpolator):
     """ Linear interpolator using a set of Lagrange shape functions
     and Gauss-Legendre as integration strategy.
@@ -42,16 +43,16 @@ class LinearLagrangeInterpolator(Interpolator):
         self.dim = dim
         self.__integration_scheme = integration_scheme
 
-        if self.dim==1:
+        if self.dim == 1:
             self.__Q = 1/6*np.matrix([[2, 1], [1, 2]])
             self.__H = np.matrix([[1, -1], [-1, 1]])
             self.__last_h = None
 
     def interpolate_over(self, element):
         """ Dimension-based dispatcher """
-        if self.dim==1:
+        if self.dim == 1:
             return self.__1dinterp(element)
-        if self.dim==2:
+        if self.dim == 2:
             return self.__2dinterp(element)
 
     def __1dinterp(self, element):
@@ -62,12 +63,9 @@ class LinearLagrangeInterpolator(Interpolator):
         fun and later use... may be.
         """
         h = np.abs(element.nodes[1][0]-element.nodes[0][0])
-        if self.__last_h!=h:
+        if self.__last_h != h:
             self.__last_h = h
-            self.__interpolated_tuple = (
-                    h*self.__Q,
-                    1/h*self.__H
-                    )
+            self.__interpolated_tuple = (h*self.__Q, 1/h*self.__H)
         return self.__interpolated_tuple
 
     def __2dinterp(self, element):

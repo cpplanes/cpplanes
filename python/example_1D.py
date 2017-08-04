@@ -21,10 +21,7 @@ from pyplanes.interp import LinearLagrangeInterpolator
 from pyplanes.materials import Fluid
 from pyplanes.domain import FEMDomain
 
-
-
-f = 200;
-
+f = 200
 
 mesh = Mesh1D(1, N=40)
 air = Fluid(rho=1.241, c=343)
@@ -33,8 +30,11 @@ right_wall = RigidWall(edges=mesh.get_edge([-1]), material=air)
 
 interp = LinearLagrangeInterpolator(dim=1)
 
-domain = FEMDomain(mesh=mesh, interp=interp, material=air,
-        boundary_conditions=[left_exc, right_wall])
+domain = FEMDomain(
+    mesh=mesh,
+    interp=interp,
+    material=air,
+    boundary_conditions=[left_exc, right_wall])
 
 domain.solve(f=f)
 
@@ -43,4 +43,3 @@ node_coords = np.array(mesh.nodes)
 plt.figure()
 plt.plot(node_coords[:,0], np.absolute(domain.solution), marker='+', linestyle='None')
 plt.show()
-

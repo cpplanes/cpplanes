@@ -44,5 +44,3 @@ class IntegrationScheme:
     def compute_order(cls, n):
         """ Compute coefficient for order n """
         raise NotImplementedError('This function must be overrided by subclasses')
-
-
