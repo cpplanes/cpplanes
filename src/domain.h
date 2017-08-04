@@ -1,5 +1,5 @@
 /*
- * Domain.h
+ * domain.h
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -21,38 +21,7 @@
  *
  */
 
-#ifndef __Domain_h__
-#define __Domain_h__
+#pragma once
 
-#include "Mesh.h"
-#include "Medium.h"
-#include "utils.h"
-#include "methods/Method.h"
-#include <Eigen/Sparse>
-
-using namespace Eigen;
-using namespace cpplanes;
-
-namespace domain {
-
-class Domain {
-	/*
-	 * A domain assigns a method, a physical model to a given Mesh object
-	 * (which defines geometrical properties).
-	 *
-	 */
-private:
-	mesh::Mesh mesh;
-	medium::Id material_id;
-	medium::PhysicalModel model;
-	method::Method* method;
-	int nbdof = {-1};
-public:
-	int get_nbdof();
-	SparseMatrix<cplx_t> assemble(cplx_t frequency, int linsys_size);
-};
-
-}
-
-#endif /* !__Domain_h__ */
-
+#include "domain/base_domain.h"
+#include "domain/fem_domain.h"

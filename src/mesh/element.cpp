@@ -1,5 +1,5 @@
 /*
- * Domain.cxx
+ * element.cpp
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -21,30 +21,29 @@
  *
  */
 
-#include "Domain.h"
+#include "element.h"
 
-namespace domain {
+#include <cmath>
 
-int Domain::get_nbdof () {
+namespace cpplanes {
 
-	if (nbdof > -1) {
-		return nbdof;
-		// TODO warning
+	template<int _DIM, int _NB_N>
+	Element<_DIM, _NB_N>::Element(std::vector<int> nodes_id,
+		std::vector<std::vector<real_t>> nodes_coords):
+		nodes_id(nodes_id), nodes_coords(nodes_coords) {}
+
+	Element1D::Element1D(
+		std::vector<int> nodes_id,
+		std::vector<std::vector<real_t>> nodes_coords
+	): Element(nodes_id, nodes_coords) {
+		// TODO: check vectors' size
 	}
 
-	// Let the method add nodes it requires for interpolation
-	// method.adapt_mesh(mesh);
-
-	int nbdof = mesh.nodes.size()*model.nbdof_fem_by_node;
-	// TODO: implement Dirichlet BC
-	return nbdof;
-}
-
-SparseMatrix<cplx_t> Domain::assemble(cplx_t frequency, int linsys_size) {
-	SparseMatrix<cplx_t> t =  method->assemble(frequency, linsys_size, mesh);
-	return t;
-}
+	real_t Element1D::get_length() {
+		return static_cast<real_t>(
+				std::abs(nodes_coords[0][0] - nodes_coords[1][0])
+			);
+	}
 
 }
-
 

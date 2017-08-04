@@ -1,5 +1,5 @@
 /*
- * SE2.h
+ * integration_scheme.h
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -21,27 +21,21 @@
  *
  */
 
-#ifndef __SE2_h__
-#define __SE2_h__
+#pragma once
 
-#include "../Method.h"
-#include "../../Mesh.h"
-#include "../../Medium.h"
-#include "../../utils.h"
-#include <Eigen/Sparse>
+#include <map>
+#include <vector>
+#include <array>
 
-using namespace Eigen;
-using namespace cpplanes;
+#include "../types.h"
 
-namespace se2 {
+namespace cpplanes {
+	namespace integration {
 
-class SE2: public method::Method {
-public:
-	int size();
-	SparseMatrix<cplx_t> assemble(cplx_t frequency, int linsys_size,  mesh::Mesh mesh);
-};
+		using coef_storage_t = std::map<int, std::vector<std::array<real_t, 2>>>;
 
+		class IntegrationScheme { };
+
+	}
 }
-
-#endif /* !__SE2_h__ */
 

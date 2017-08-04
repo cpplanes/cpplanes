@@ -1,5 +1,5 @@
 /*
- * config.h
+ * base_domain.cpp
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -21,12 +21,24 @@
  *
  */
 
-#pragma once
+#include "base_domain.h"
+#include "../mesh/mesh.h"
+#include "../medium/medium.h"
+#include "../bc/bc.h"
 
-#define MAX_NODES_PER_ELEMENT 3
-#define MAX_NODES_PER_EDGE 1
-#define MAX_COORDS_PER_NODE 1
+namespace cpplanes {
 
-// this is not a max but a mean (think 3D)
-#define ELEMENTS_PER_EDGE 2
+	template <typename _MeshT>
+	BaseDomain<_MeshT>::BaseDomain(
+		_MeshT mesh,
+		PhysicalModel medium,
+		std::vector<std::shared_ptr<BCBase>> boundary_conditions):
+		mesh(mesh), medium(medium), boundary_conditions(boundary_conditions)
+	{
+		static_assert(
+			std::is_base_of<MeshRoot, _MeshT>::value,
+			"_MeshT is not derived from MeshRoot."
+		);
+	}
+}
 

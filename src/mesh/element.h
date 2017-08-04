@@ -1,5 +1,5 @@
 /*
- * Method.h
+ * element.h
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -21,34 +21,36 @@
  *
  */
 
-#ifndef __Method_h__
-#define __Method_h__
+#pragma once
 
-#include <Eigen/Sparse>
-#include <Eigen/Dense>
-#include "../config.h"
-#include "../utils.h"
-#include "../Mesh.h"
+#include <vector>
 
-using namespace Eigen;
-using namespace cpplanes;
+#include "../types.h"
 
-namespace method {
+namespace cpplanes {
 
-class Method {
-public:
-	Matrix<real_t, Dynamic, Dynamic> get_H(std::array<mesh::Node, MAX_NODES_PER_ELEMENT> nodes);
-	Matrix<real_t, Dynamic, Dynamic> get_Q(std::array<mesh::Node, MAX_NODES_PER_ELEMENT> nodes);
+	template <int _DIMENSION, int _NB_NODES>
+	class Element {
+	public:
+		Element(
+			std::vector<int> nodes_id,
+			std::vector<std::vector<real_t>> nodes_coords
+		);
 
-	virtual SparseMatrix<cplx_t> assemble(cplx_t frequency, int linsys_size, mesh::Mesh mesh);
+		const std::vector<int> nodes_id;
+		const std::vector<std::vector<real_t>> nodes_coords;
+		const int dimension = _DIMENSION;
+		const int nb_nodes = _NB_NODES;
 
-	// virtual void adapt_mesh(mesh::Mesh mesh);
-	// virtual get_M()
-	// virtual get_K1()
-	// virtual get_K1()
-};
+	};
+
+	class Element1D : public Element<1, 2> {
+	private:
+		real_t length;
+	public:
+		Element1D(std::vector<int> nodes_id, std::vector<std::vector<real_t>> nodes_coords);
+
+		real_t get_length();
+	};
 
 }
-
-#endif /* !__Method_h__ */
-

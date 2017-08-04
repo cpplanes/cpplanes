@@ -1,5 +1,5 @@
 /*
- * utils.h
+ * medium.cpp
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -21,26 +21,13 @@
  *
  */
 
-#ifndef __utils_h__
-#define __utils_h__
-
-#include <Eigen/Dense>
-#include <complex>
+#include "medium.h"
 
 namespace cpplanes {
 
-	using real_t = double;
-	using cplx_t = std::complex<real_t>;
+	PhysicalModel::PhysicalModel(int sv_size, int nbfem):
+		state_vector_size{sv_size},
+		nbdof_fem_by_node{nbfem} {};
 
 }
-
-namespace Eigen {
-
-	using real_t = double;
-	using cplx_t = std::complex<real_t>;
-
-}
-
-
-#endif /* !__utils_h__ */
 

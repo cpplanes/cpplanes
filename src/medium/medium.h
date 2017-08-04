@@ -1,5 +1,5 @@
 /*
- * Medium.h
+ * medium.h
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -21,36 +21,23 @@
  *
  */
 
-#ifndef __Medium_h__
-#define __Medium_h__
+#pragma once
 
-namespace medium {
-/*
- * To be implemented:
- * - Elastic,
- * - EquivalentFluid,
- * - Limp,
- * - Biot98,
- * - Biot01,
- * - PML
- */
+#include "../types.h"
 
-typedef unsigned int Id;
+namespace cpplanes {
 
-class PhysicalModel {
-private:
-public:
-	const int state_vector_size = {-1};
-	const int nbdof_fem_by_node = {-1};
-};
+	class PhysicalModel {
+	public:
+		PhysicalModel(int sv_size, int nbfem);
 
-class Air: public PhysicalModel {
-public:
-	const int state_vector_size = 3;
-	const int nbdof_fem_by_node = 1;
-};
+		const int state_vector_size;
+		const int nbdof_fem_by_node;
+
+		virtual cplx_t get_Pwn(cplx_t frequency) const;
+		virtual cplx_t get_S1wn(cplx_t frequency) const;
+		virtual cplx_t get_S2wn(cplx_t frequency) const;
+	};
 
 }
-
-#endif /* !__Medium_h__ */
 

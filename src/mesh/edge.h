@@ -1,5 +1,5 @@
 /*
- * config.h
+ * edge.h
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -23,10 +23,42 @@
 
 #pragma once
 
-#define MAX_NODES_PER_ELEMENT 3
-#define MAX_NODES_PER_EDGE 1
-#define MAX_COORDS_PER_NODE 1
+#include <vector>
 
-// this is not a max but a mean (think 3D)
-#define ELEMENTS_PER_EDGE 2
+#include "../types.h"
+
+namespace cpplanes {
+
+	template <int _DIMENSION, int _NB_NODES>
+	class Edge {
+	private:
+		real_t length;
+
+	protected:
+		const std::vector<int> nodes_id;
+		const std::vector<std::vector<real_t>> nodes_coords;
+		const int dimension = _DIMENSION;
+		const int nb_nodes = _NB_NODES;
+
+	public:
+		Edge(
+			std::vector<int> nodes_id,
+			std::vector<std::vector<real_t>> nodes_coords
+		);
+
+		virtual real_t get_length();
+	};
+
+
+	class Edge1D: public Edge<1, 1> {
+	public:
+		Edge1D(
+			std::vector<int> nodes_id,
+			std::vector<std::vector<real_t>> nodes_coords
+		);
+
+		inline virtual real_t get_length() override { return 0; }
+	};
+
+}
 

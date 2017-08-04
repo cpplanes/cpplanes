@@ -1,5 +1,5 @@
 /*
- * LinearSystem.h
+ * interpolator.cpp
  *
  * This file is part of cpplanes, a software distributed under the MIT license.
  * For any question, please contact one of the authors cited below.
@@ -21,43 +21,11 @@
  *
  */
 
-#ifndef __LinearSystem_h__
-#define __LinearSystem_h__
+#include "interpolator.h"
 
-#include <Eigen/Sparse>
-#include "Domain.h"
-#include "utils.h"
+namespace cpplanes {
 
-using namespace cpplanes;
-using namespace Eigen;
-using namespace domain;
-
-namespace linsys {
-
-enum class BC {
-	Rigid,
-	NormalVelocity,
-	TangentialVelocity,
-	Sliding,
-	Bonded,
-	IncidentPW,
-	TransmittedPW,
-	DtNPlate,
-	DispersionAnalysis
-};
-
-class LinearSystem {
-private:
-	int get_linsys_size();
-
-	SparseMatrix<cplx_t> A;
-	int linsys_size = {-1};
-	std::vector<Domain> domains;
-public:
-	bool assemble(cplx_t frequency);
-};
-
+	template <typename _MatrixT, typename _ElementT>
+	Interpolator<_MatrixT, _ElementT>::Interpolator(int dimension): dimension(dimension) {}
 }
-
-#endif /* !__LinearSystem_h__ */
 
