@@ -26,10 +26,10 @@
 
 namespace cpplanes {
 
-	template <typename _ElementT, typename _MatrixT>
-	LinearLagrange<_ElementT, _MatrixT>::LinearLagrange(
-		integration::IntegrationScheme integration_scheme,
+	template <typename _MatrixT, typename _ElementT, class _Integ>
+	LinearLagrange<_MatrixT, _ElementT, _Integ>::LinearLagrange(
+		int integration_order,
 		int dimension
-	): Interpolator<_ElementT, _MatrixT>(dimension), integration_scheme(integration_scheme) {}
+	): Interpolator<_MatrixT, _ElementT>::Interpolator(dimension), integration_order(integration_order) {}
 }
 

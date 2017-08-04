@@ -27,25 +27,25 @@
 
 #include "linear_lagrange.h"
 #include "../types.h"
+#include "../integration/integration_scheme.h"
 
 using namespace Eigen;
 using cpplanes::Matrix2r;
 
 namespace cpplanes {
 
-	class LinearLagrange1D : LinearLagrange<Element1D, Matrix2r> {
+	template <typename _MatrixT=Matrix2r, typename _ElementT=Element1D, class _Integ=integration::IntegrationScheme>
+	class LinearLagrange1D : public LinearLagrange<_MatrixT, _ElementT, _Integ> {
 	private:
-		int integration_order;
 		Matrix2r unit_H, unit_Q;
 
 	public:
-		LinearLagrange1D(
-			integration::IntegrationScheme integration_scheme,
-			int integration_order
-		);
+		typedef _ElementT ElementT;
+		typedef _MatrixT MatrixT;
+		LinearLagrange1D(int integration_order);
 
-		virtual void get_H(Element1D const& element, Matrix2r const& H_);
-		virtual void get_Q(Element1D const& element, Matrix2r const& Q_);
+		virtual void get_Q(ElementT const& element, MatrixT const& Q_) const override;
+		virtual void get_H(ElementT const& element, MatrixT const& H_) const override;
 	};
 
 }

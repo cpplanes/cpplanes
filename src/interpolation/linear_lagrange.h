@@ -30,19 +30,20 @@
 
 namespace cpplanes {
 
-	template <typename _ElementT, typename _MatrixT>
-	class LinearLagrange : public Interpolator<_ElementT, _MatrixT> {
-	private:
-		integration::IntegrationScheme integration_scheme;
+	template <typename _MatrixT, typename _ElementT, class _Integ>
+	class LinearLagrange : public Interpolator<_MatrixT, _ElementT> {
+	protected:
+		int integration_order;
+		typedef _Integ Integ;
 
 	public:
 		LinearLagrange(
-			integration::IntegrationScheme integration_scheme,
-			int dimension = -1
+			int integration_order,
+			int dimension
 		);
 
-		virtual void get_Q(_ElementT const& element, _MatrixT const& Q_);
-		virtual void get_H(_ElementT const& element, _MatrixT const& H_);
+		virtual void get_Q(_ElementT const& element, _MatrixT const& Q_) const override;
+		virtual void get_H(_ElementT const& element, _MatrixT const& H_) const override;
 	};
 
 }

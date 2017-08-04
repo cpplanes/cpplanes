@@ -33,7 +33,7 @@ namespace cpplanes {
 
 	template <typename _MatrixT, typename _ElementT>
 	class Interpolator {
-	private:
+	protected:
 		int dimension;
 
 	public:
@@ -42,8 +42,8 @@ namespace cpplanes {
 		typedef _MatrixT MatrixT;
 		typedef _ElementT ElementT;
 
-		virtual void get_Q(_ElementT element, _MatrixT const& Q_);
-		virtual void get_H(_ElementT element, _MatrixT const& H_);
+		virtual void get_Q(_ElementT const& element, _MatrixT const& Q_) const;
+		virtual void get_H(_ElementT const& element, _MatrixT const& H_) const;
 	};
 
 }
