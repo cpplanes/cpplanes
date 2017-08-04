@@ -32,23 +32,21 @@ from pyplanes.integration import GaussLegendreTriangle
 from pyplanes.materials import Fluid
 from pyplanes.domain import FEMDomain
 
-
-f = 1000;
-
+f = 1000
 
 mesh = freefem_read('square.msh')
 
 edges_bc_rigid = []
 edges_bc_unit = []
 for i in range(len(mesh.edges_labels)):
-    if mesh.edges_labels[i]==0:
+    if mesh.edges_labels[i] == 0:
         edges_bc_rigid.append(i)
-    elif mesh.edges_labels[i]==1:
+    elif mesh.edges_labels[i] == 1:
         edges_bc_unit.append(i)
 
 air = Fluid(rho=1.213, c=343)
 
-bc_rigid= RigidWall(edges=list(map(mesh.get_edge, edges_bc_rigid)), material=air)
+bc_rigid = RigidWall(edges=list(map(mesh.get_edge, edges_bc_rigid)), material=air)
 bc_unit = UnitVelocity(edges=list(map(mesh.get_edge, edges_bc_unit)), material=air)
 
 interp = LinearLagrangeInterpolator(dim=2, integration_scheme=GaussLegendreTriangle)
@@ -61,7 +59,7 @@ node_coords = np.array(mesh.nodes)
 # reference solution
 k = air.get_wavenumber(f)
 L = 1  # length of the tube
-reference = air.rho*air.c*np.cos(k*(node_coords[:,0]-L))/(1j*np.sin(k*L))
+reference = air.rho*air.c*np.cos(k*(node_coords[:, 0]-L))/(1j*np.sin(k*L))
 
 plt.figure()
 plt.plot(node_coords[:,0], np.absolute(domain.solution), marker='+', linestyle='None')
@@ -80,5 +78,3 @@ plt.show()
 # plt.figure()
 # plt.plot(mesh.nodes[:-1], x)
 # plt.show()
-
-

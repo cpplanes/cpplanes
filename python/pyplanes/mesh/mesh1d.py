@@ -22,7 +22,8 @@
 # copies or substantial portions of the Software.
 #
 
-from .base_mesh import Element, Edge, Mesh
+from .base_mesh import Mesh
+
 
 class Mesh1D(Mesh):
 

@@ -28,5 +28,3 @@ class Material:
     Keep in mind that the goal is to mimick C++
     """
     pass
-
-

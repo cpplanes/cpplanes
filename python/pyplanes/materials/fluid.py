@@ -26,6 +26,7 @@ import numpy as np
 
 from .base_material import Material
 
+
 class Fluid(Material):
     """ Fluid medium class
 

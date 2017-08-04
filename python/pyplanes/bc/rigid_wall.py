@@ -24,6 +24,7 @@
 
 from .base_bc import BoundaryCondition
 
+
 class RigidWall(BoundaryCondition):
     """
     Rigid wall (just do nothing and succeed anyway)
@@ -34,7 +35,3 @@ class RigidWall(BoundaryCondition):
 
     def evaluate(self, f):
         return True
-
-
-
-

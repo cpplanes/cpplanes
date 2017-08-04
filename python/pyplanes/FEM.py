@@ -86,7 +86,7 @@ class FEM:
             self.map_dof_node.remove(n)
 
         self.A = sparse.coo_matrix((A_v, (A_r, A_c)), dtype=np.complex128).tocsr()
-        self.b = sparse.coo_matrix((b_v, (b_r, b_c)), shape=(self.A.shape[0],1), dtype=np.complex128)
+        self.b = sparse.coo_matrix((b_v, (b_r, b_c)), shape=(self.A.shape[0], 1), dtype=np.complex128)
         self.b = self.b.toarray()
 
         deleted_rows = self.removed_nodes
@@ -103,7 +103,7 @@ class FEM:
         self.b = self.b[rows_mask]
 
     def solve(self, f=1000):
-        if self.__assembled_frequency!=f:
+        if self.__assembled_frequency != f:
             self.assemble(f=f)
         if self.A is None or self.b is None:
             raise ValueError('System flagged as assembled but no value found.')
@@ -113,4 +113,3 @@ class FEM:
         self.solution = np.zeros((len(self.mesh.nodes),), dtype=np.complex128)
         self.solution[np.r_[self.map_dof_node]] = self.x
         return self.solution
-

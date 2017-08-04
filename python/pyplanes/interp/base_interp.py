@@ -32,4 +32,3 @@ class Interpolator:
 
     def interpolate_over(self, element):
         pass
-

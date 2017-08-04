@@ -24,6 +24,7 @@
 
 import scipy.sparse as sparse
 
+
 class System:
 
     def __init__(self, domains=None):
@@ -38,7 +39,7 @@ class System:
 
     def gather_material_references(self):
         material_references = set()
-        for d in domain:
+        for d in self.domains:
             material_references.add(d.material)
 
         return material_references
@@ -53,13 +54,14 @@ class System:
 
         # update materials with the new frequency
         # a caching system should be implemented in Material
-        for m in self.materials: m.update(f)
+        for m in self.materials:
+            m.update(f)
 
         self.total_size = 0
         self.domain_sizes = {}
         for i_d, d in enumerate(self.domain):
             needed_size = d.assemble(f)
-            self.total_size += size
+            self.total_size += needed_size
             self.domain_sizes[i_d] = needed_size
 
         self.A = sparse.coomatrix((self.total_size,self.total_size))
@@ -73,5 +75,3 @@ class System:
     def solve(self, f):
         self.assemble(f)
         self.x = sparse.linalg.spsolve(self.A, self.b)
-
-

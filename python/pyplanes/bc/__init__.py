@@ -25,4 +25,3 @@
 from .base_bc import BoundaryCondition
 from .rigid_wall import RigidWall
 from .unit import UnitVelocity
-

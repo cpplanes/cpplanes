@@ -24,6 +24,7 @@
 
 from functools import reduce
 
+
 class BoundaryCondition:
     """
     Base class for boundary conditions
@@ -62,7 +63,6 @@ class BoundaryCondition:
         Evaluate the boundary condition & return True if successful
         """
         return False
-
 
     def get_all_node_ids(self):
         """
