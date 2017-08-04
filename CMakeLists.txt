@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 2.6.0)
 
+# Check existence of the dependencies
+if(NOT EXISTS ${CMAKE_SOURCE_DIR}/deps)
+	message( FATAL_ERROR "Please run ./scripts/fetch_deps.sh" )
+endif(NOT EXISTS ${CMAKE_SOURCE_DIR}/deps)
+
 # set(CMAKE_CXX_COMPILER "clang++")
 # set(CMAKE_C_COMPILER "clang")
 set(CMAKE_CXX_STANDARD 14)
