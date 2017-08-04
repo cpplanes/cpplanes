@@ -1,5 +1,16 @@
-build/
 *.swp
 ~*
 *~
+
+# Auto-created and build dir
 .venv/
+deps/
+bin/
+build/
+
+# Vim specific
+.ycm_extra_conf.py
+=template.cpp
+=template.h
+=template.py
+compile_commands.json
