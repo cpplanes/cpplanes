@@ -28,11 +28,11 @@
 namespace cpplanes {
 	namespace medium {
 
-		class Fluid : public PhysicalModel {
+		class Fluid : public cpplanes::PhysicalModel {
 		public:
-			Fluid(): PhysicalModel(3, 1) {};
+			Fluid();
 
-			virtual cplx_t get_Pwn(cplx_t frequency) const override;
+			virtual cplx_t get_Pwn(cplx_t frequency) const override = 0;
 		};
 
 	}

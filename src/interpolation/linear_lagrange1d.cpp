@@ -31,27 +31,27 @@ using cpplanes::Vector2r;
 
 namespace cpplanes {
 
-	LinearLagrange1D::LinearLagrange1D(
-		integration::IntegrationScheme integration_scheme,
-		int integration_order
-	): LinearLagrange(integration_scheme, 1), integration_order(integration_order) {
+	template <typename _MT, typename _ET, class _IS>
+	LinearLagrange1D<_MT, _ET, _IS>::LinearLagrange1D(int integration_order): LinearLagrange<_MT, _ET, _IS>::LinearLagrange(integration_order, 1) {
 		unit_Q << 2 / 6, 1 / 6, 1 / 6, 2 / 6;
 		unit_H << 1, -1, -1, 1;
 	}
 
-	void LinearLagrange1D::get_Q(Element1D const& element, Matrix2r const& Q_) {
+	template <typename _MT, typename _ET, class _IS>
+	void LinearLagrange1D<_MT, _ET, _IS>::get_Q(ElementT const& element, MatrixT const& Q_) const {
 		Map<Vector2r>
-		n0(static_cast<std::vector<real_t>>(element.nodes_coords.at(0)).data()),
-		n1(static_cast<std::vector<real_t>>(element.nodes_coords.at(1)).data());
+			n0(static_cast<std::vector<real_t>>(element.nodes_coords.at(0)).data()),
+			n1(static_cast<std::vector<real_t>>(element.nodes_coords.at(1)).data());
 		real_t length = (n0 - n1).norm();
 		Matrix2r& Q = const_cast<Matrix2r&>(Q_);
 		Q = length * unit_Q;
 	}
 
-	void LinearLagrange1D::get_H(Element1D const& element, Matrix2r const& H_) {
+	template <typename _MT, typename _ET, class _IS>
+	void LinearLagrange1D<_MT, _ET, _IS>::get_H(ElementT const& element, MatrixT const& H_) const {
 		Map<Vector2r>
-		n0(static_cast<std::vector<real_t>>(element.nodes_coords.at(0)).data()),
-		n1(static_cast<std::vector<real_t>>(element.nodes_coords.at(1)).data());
+			n0(static_cast<std::vector<real_t>>(element.nodes_coords.at(0)).data()),
+			n1(static_cast<std::vector<real_t>>(element.nodes_coords.at(1)).data());
 		real_t length = (n0 - n1).norm();
 		Matrix2r& Q = const_cast<Matrix2r&>(H_);
 		Q = 1 / length * unit_Q;
