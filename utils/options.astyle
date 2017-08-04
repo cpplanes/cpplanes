@@ -1,0 +1,22 @@
+##### General #####
+preserve-date
+lineend=linux
+##### brackets & indentation #####
+indent=force-tab
+attach-namespaces
+attach-classes
+attach-inlines
+indent-namespaces
+indent-after-parens
+indent-col1-comments
+min-conditional-indent=0 # no minimal indent in conditional statements
+##### Space padding ####
+pad-comma
+pad-header
+##### One line statements & inlines #####
+add-braces
+keep-one-line-blocks
+keep-one-line-statements
+##### Pointer & ref symbols alignement #####
+align-pointer=type
+align-reference=type
